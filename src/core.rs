@@ -146,8 +146,9 @@ impl Engine {
 
         let results: Vec<_> = entries.par_iter()
             .map(|entry| {
-                let rt = tokio::runtime::Runtime::new().unwrap();
-                let verdict = rt.block_on(self.scan_file(entry.path()));
+                // Use the existing tokio runtime handle instead of creating a new one
+                let handle = tokio::runtime::Handle::current();
+                let verdict = handle.block_on(self.scan_file(entry.path()));
                 (entry.path().to_path_buf(), verdict)
             })
             .collect();
