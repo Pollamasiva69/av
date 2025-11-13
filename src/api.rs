@@ -1,7 +1,6 @@
 //! REST API for enterprise management
 
 use crate::{Config, Engine, ScanStats};
-use crate::core::EngineStats;
 use crate::quarantine::QuarantineEntry;
 use axum::{
     extract::{Path, State},

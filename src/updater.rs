@@ -4,7 +4,7 @@ use anyhow::Result;
 use crate::Config;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use tracing::{info, error};
+use tracing::info;
 
 /// Definition updater
 pub struct DefinitionUpdater {

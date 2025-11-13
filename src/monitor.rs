@@ -5,7 +5,7 @@ use crate::scanner::FileScanner;
 use crate::quarantine::QuarantineManager;
 use anyhow::Result;
 use notify::{Watcher, RecursiveMode, Event, EventKind};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::sync::Arc;
 use tokio::sync::mpsc;
 use tracing::{info, warn, error, debug};

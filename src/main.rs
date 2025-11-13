@@ -311,7 +311,7 @@ async fn cmd_update(engine: Engine, _force: bool) -> Result<()> {
     Ok(())
 }
 
-async fn cmd_protect(engine: Engine, config: Config, daemon: bool) -> Result<()> {
+async fn cmd_protect(_engine: Engine, config: Config, daemon: bool) -> Result<()> {
     if daemon {
         println!("{}", "🛡️  Starting real-time protection (daemon mode)...".bright_yellow());
         println!("{}", "Press Ctrl+C to stop".bright_blue());

@@ -28,7 +28,7 @@ pub struct ThreatSignature {
 impl SignatureDetector {
     /// Create a new signature detector
     pub async fn new(database: Arc<Database>) -> Result<Self> {
-        let mut detector = Self {
+        let detector = Self {
             signatures: Arc::new(RwLock::new(HashMap::new())),
             database,
         };
@@ -190,5 +190,6 @@ impl SignatureDetector {
 struct FileHashes {
     md5: String,
     sha256: String,
+    #[allow(dead_code)]
     blake3: String,
 }

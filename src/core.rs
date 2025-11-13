@@ -30,7 +30,9 @@ pub enum EngineError {
 pub struct Engine {
     config: Arc<RwLock<Config>>,
     signature_detector: Arc<SignatureDetector>,
+    #[allow(dead_code)]
     heuristic_detector: Arc<HeuristicDetector>,
+    #[allow(dead_code)]
     behavioral_detector: Arc<BehavioralDetector>,
     file_scanner: Arc<FileScanner>,
     quarantine: Arc<QuarantineManager>,

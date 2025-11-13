@@ -1,8 +1,5 @@
 //! Utility functions
 
-use anyhow::Result;
-use std::path::Path;
-
 /// Format file size in human-readable format
 pub fn format_size(bytes: u64) -> String {
     const UNITS: &[&str] = &["B", "KB", "MB", "GB", "TB"];

@@ -3,7 +3,7 @@
 use anyhow::{Context, Result, bail};
 use goblin::pe::PE;
 use std::path::Path;
-use tracing::{debug, warn};
+use tracing::debug;
 
 /// PE Analysis results
 #[derive(Debug, Clone)]

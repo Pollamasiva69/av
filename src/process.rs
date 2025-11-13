@@ -1,6 +1,6 @@
 //! Process and memory scanning for Windows
 
-use anyhow::{Context, Result};
+use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use tracing::{debug, warn};
@@ -11,7 +11,6 @@ use windows::Win32::{
     System::{
         Diagnostics::ToolHelp::*,
         Threading::*,
-        ProcessStatus::*,
     },
 };
 
@@ -99,6 +98,7 @@ impl ProcessScanner {
     }
 
     /// Check process characteristics for suspicious behavior
+    #[cfg_attr(not(target_os = "windows"), allow(unused_variables))]
     fn check_process_characteristics(&self, pid: u32, _result: &mut ProcessScanResult) -> Result<()> {
         #[cfg(target_os = "windows")]
         {
