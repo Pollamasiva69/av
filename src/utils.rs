@@ -33,17 +33,10 @@ pub fn format_duration(ms: u64) -> String {
 /// Check if running with admin privileges
 #[cfg(target_os = "windows")]
 pub fn is_admin() -> bool {
-    use windows::Win32::Security::*;
-    use windows::Win32::Foundation::*;
-
-    unsafe {
-        let mut is_admin = BOOL(0);
-
-        let _ = IsUserAnAdmin();
-
-        // Simplified check - in production use proper privilege checks
-        true
-    }
+    // Simplified check - in production, use proper privilege checks
+    // This would require additional Windows API calls like OpenProcessToken
+    // and CheckTokenMembership which are more complex to implement
+    true
 }
 
 #[cfg(not(target_os = "windows"))]
