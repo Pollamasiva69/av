@@ -195,6 +195,11 @@ impl Engine {
         self.quarantine.restore(quarantine_id).await
     }
 
+    /// Restore all files from quarantine
+    pub async fn restore_all_files(&self) -> Result<crate::quarantine::RestoreAllResult> {
+        self.quarantine.restore_all().await
+    }
+
     /// Update threat definitions
     pub async fn update_definitions(&self) -> Result<u64> {
         info!("Updating threat definitions...");

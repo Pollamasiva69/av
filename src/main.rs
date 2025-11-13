@@ -100,6 +100,13 @@ enum QuarantineAction {
     /// Restore a file from quarantine
     Restore { id: String },
 
+    /// Restore ALL files from quarantine
+    RestoreAll {
+        /// Skip confirmation prompt
+        #[arg(short, long)]
+        yes: bool,
+    },
+
     /// Delete a quarantined file
     Delete { id: String },
 }
@@ -228,6 +235,61 @@ async fn cmd_quarantine(engine: Engine, action: QuarantineAction) -> Result<()> 
             println!("{}", format!("🔄 Restoring file: {}", id).bright_yellow());
             engine.restore_file(&id).await?;
             println!("{}", "✓ File restored successfully".bright_green());
+        }
+        QuarantineAction::RestoreAll { yes } => {
+            if !yes {
+                println!("{}", "⚠️  WARNING: This will restore ALL files from quarantine!".bright_red().bold());
+                println!("{}", "This may include malicious files. Are you sure? (y/N)".bright_yellow());
+
+                use std::io::{self, BufRead};
+                let stdin = io::stdin();
+                let mut line = String::new();
+                stdin.lock().read_line(&mut line)?;
+
+                if !line.trim().eq_ignore_ascii_case("y") {
+                    println!("{}", "Operation cancelled.".bright_yellow());
+                    return Ok(());
+                }
+            }
+
+            println!("{}", "🔄 Restoring all files from quarantine...".bright_yellow());
+            println!();
+
+            let result = engine.restore_all_files().await?;
+
+            println!();
+            println!("{}", "═══════════════════════════════════════".bright_cyan());
+            println!("{}", "      RESTORE ALL RESULTS".bright_cyan().bold());
+            println!("{}", "═══════════════════════════════════════".bright_cyan());
+            println!("{}: {}", "Total Files".bright_white(), result.total.to_string().bright_blue());
+            println!("{}: {}", "Successfully Restored".bright_white(), result.restored.to_string().bright_green());
+            println!("{}: {}", "Failed".bright_white(),
+                if result.failed > 0 {
+                    result.failed.to_string().bright_red()
+                } else {
+                    result.failed.to_string().bright_green()
+                }
+            );
+            println!("{}", "═══════════════════════════════════════".bright_cyan());
+
+            if !result.errors.is_empty() {
+                println!();
+                println!("{}", "Errors:".bright_red());
+                for error in &result.errors {
+                    println!("  {}", error.bright_red());
+                }
+            }
+
+            if result.restored == result.total {
+                println!();
+                println!("{}", "✓ All files restored successfully!".bright_green().bold());
+            } else if result.restored > 0 {
+                println!();
+                println!("{}", format!("⚠️  Partially completed: {}/{} files restored", result.restored, result.total).bright_yellow());
+            } else {
+                println!();
+                println!("{}", "✗ No files could be restored.".bright_red());
+            }
         }
         QuarantineAction::Delete { id } => {
             println!("{}", format!("🗑️  Deleting file: {}", id).bright_yellow());

@@ -20,6 +20,15 @@ pub struct QuarantineEntry {
     pub file_hash: String,
 }
 
+/// Result of restore all operation
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RestoreAllResult {
+    pub total: usize,
+    pub restored: usize,
+    pub failed: usize,
+    pub errors: Vec<String>,
+}
+
 /// Quarantine manager
 pub struct QuarantineManager {
     quarantine_dir: PathBuf,
@@ -160,6 +169,52 @@ impl QuarantineManager {
         self.remove_entry(id)?;
 
         Ok(())
+    }
+
+    /// Restore ALL files from quarantine
+    pub async fn restore_all(&self) -> Result<RestoreAllResult> {
+        let entries = self.load_entries()?;
+
+        if entries.is_empty() {
+            return Ok(RestoreAllResult {
+                total: 0,
+                restored: 0,
+                failed: 0,
+                errors: Vec::new(),
+            });
+        }
+
+        let total = entries.len();
+        let mut restored = 0;
+        let mut failed = 0;
+        let mut errors = Vec::new();
+
+        info!("Starting restore of {} files from quarantine", total);
+
+        for entry in entries {
+            match self.restore(&entry.id).await {
+                Ok(_) => {
+                    restored += 1;
+                    info!("✓ Restored: {} ({})", entry.original_path.display(), entry.id);
+                }
+                Err(e) => {
+                    failed += 1;
+                    let error_msg = format!("✗ Failed to restore {} ({}): {}",
+                        entry.original_path.display(), entry.id, e);
+                    warn!("{}", error_msg);
+                    errors.push(error_msg);
+                }
+            }
+        }
+
+        info!("Restore complete: {}/{} restored, {} failed", restored, total, failed);
+
+        Ok(RestoreAllResult {
+            total,
+            restored,
+            failed,
+            errors,
+        })
     }
 
     /// Delete a quarantined file permanently

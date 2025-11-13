@@ -108,8 +108,14 @@ sentinel-av.exe protect --daemon
 # List quarantined files
 sentinel-av.exe quarantine list
 
-# Restore a file
+# Restore a single file
 sentinel-av.exe quarantine restore <FILE_ID>
+
+# Restore ALL files from quarantine (with confirmation)
+sentinel-av.exe quarantine restore-all
+
+# Restore ALL files without confirmation prompt
+sentinel-av.exe quarantine restore-all --yes
 
 # Delete permanently
 sentinel-av.exe quarantine delete <FILE_ID>
