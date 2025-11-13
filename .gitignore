@@ -1,0 +1,52 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# Quarantine
+quarantine/
+*.quarantine
+
+# Config (keep example)
+sentinel-config.toml
+!example-config.toml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test files
+test-files/
+samples/
+
+# Documentation builds
+/book/
+/docs/build/
+
+# Backup files
+*.bak
+*.backup

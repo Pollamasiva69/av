@@ -1,0 +1,115 @@
+# Sentinel AV Configuration Example
+# Copy this file to sentinel-config.toml and customize for your environment
+
+[engine]
+# Detection engines to enable
+enabled_detectors = ["signature", "heuristic", "behavioral"]
+
+# Maximum file size to scan (in MB)
+max_file_size_mb = 500
+
+# Maximum number of threads for parallel scanning
+max_threads = 8
+
+# Scan timeout in seconds
+timeout_seconds = 300
+
+[scanner]
+# Recursive directory scanning
+recursive = true
+
+# Follow symbolic links
+follow_symlinks = false
+
+# Scan inside archives (ZIP, RAR, etc.)
+scan_archives = true
+
+# Scan process memory
+scan_memory = true
+
+# Paths to exclude from scanning
+excluded_paths = [
+    "C:\\Windows\\WinSxS",
+    "C:\\$Recycle.Bin",
+    "C:\\System Volume Information"
+]
+
+# File extensions to exclude
+excluded_extensions = [
+    "tmp",
+    "log",
+    "cache"
+]
+
+[monitor]
+# Enable real-time file system monitoring
+enabled = true
+
+# Paths to monitor in real-time
+monitored_paths = [
+    "C:\\Users",
+    "C:\\Program Files",
+    "C:\\Program Files (x86)",
+    "C:\\ProgramData"
+]
+
+# Enable real-time protection
+real_time_protection = true
+
+# Automatically quarantine detected threats
+auto_quarantine = true
+
+[quarantine]
+# Quarantine storage path
+path = "C:\\ProgramData\\SentinelAV\\Quarantine"
+
+# Maximum quarantine storage size (in GB)
+max_size_gb = 10
+
+# Retention period for quarantined files (in days)
+retention_days = 30
+
+# Encrypt quarantined files
+encrypt = true
+
+[api]
+# Enable REST API server
+enabled = true
+
+# Bind address
+bind_address = "127.0.0.1"
+
+# Port number
+port = 8443
+
+# API authentication key (optional)
+# api_key = "your-secret-key-here"
+
+# Enable TLS/HTTPS
+tls_enabled = false
+
+[updater]
+# Enable automatic updates
+enabled = true
+
+# Update server URL
+update_url = "https://definitions.sentinelav.local/updates"
+
+# Check for updates every N hours
+check_interval_hours = 6
+
+# Automatically download and install updates
+auto_update = true
+
+[logging]
+# Log level: trace, debug, info, warn, error
+level = "info"
+
+# Log file path
+file_path = "C:\\ProgramData\\SentinelAV\\Logs\\sentinel.log"
+
+# Maximum log file size (in MB)
+max_size_mb = 100
+
+# Rotate logs daily
+rotate_daily = true
