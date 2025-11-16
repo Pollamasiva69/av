@@ -1,9 +1,12 @@
 //! Process and memory scanning for Windows
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
-use tracing::{debug, warn};
+use tracing::debug;
+
+#[cfg(not(target_os = "windows"))]
+use tracing::warn;
 
 #[cfg(target_os = "windows")]
 use windows::Win32::{
